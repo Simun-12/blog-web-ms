@@ -1,23 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import { getAllBlogs } from "./util/Api";
+import "./App.css";
 
 function App() {
+  const [blogs, setBlogs] = useState([]);
+
+  useEffect(() => {
+    fetchBlogs();
+  }, []);
+
+  const fetchBlogs = async () => {
+    try {
+      const response = await getAllBlogs();
+      setBlogs(response.data);
+    } catch (error) {
+      console.error("Error fetching blogs:", error);
+    }
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="blog-container">
+      <h1 className="blog-header">Meow 😼</h1>
+
+      {blogs.length === 0 ? (
+        <p>No blogs yet. Start writing!</p>
+      ) : (
+        blogs.map((blog) => (
+          <div key={blog.postId} className="blog-card">
+            <div className="blog-title">{blog.title}</div>
+            <div className="blog-content">
+              {blog.content || "No content available"}
+            </div>
+            <div className="blog-meta">Written by Unknown • Just now</div>
+          </div>
+        ))
+      )}
     </div>
   );
 }

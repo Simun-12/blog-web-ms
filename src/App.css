@@ -1,38 +1,63 @@
-.App {
+body {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  background-color: #fafafa;
+  color: #242424;
+  margin: 0;
+  padding: 0;
+}
+
+/* Container like Medium */
+.blog-container {
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+/* App title */
+.blog-header {
+  font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+  font-size: 42px;
+  font-weight: 700;
+  margin-bottom: 40px;
   text-align: center;
+  color: #000;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* Blog card wrapper */
+.blog-card {
+  border-bottom: 1px solid #e6e6e6;
+  padding: 24px 0;
+  transition: background-color 0.2s;
+  cursor: pointer;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.blog-card:hover {
+  background-color: #f9f9f9;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+/* Blog title */
+.blog-title {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #000;
 }
 
-.App-link {
-  color: #61dafb;
+/* Blog content preview */
+.blog-content {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #444;
+  margin-bottom: 12px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Show only 3 lines like Medium */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Meta info (author/date, optional) */
+.blog-meta {
+  font-size: 14px;
+  color: #757575;
 }
