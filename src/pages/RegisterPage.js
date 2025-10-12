@@ -11,21 +11,14 @@ import {
   Link,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import dayjs from "dayjs";
 
 const RegisterPage = ({ open, onClose }) => {
-  const [dob, setDob] = useState(dayjs());
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [usernameError, setUsernameError] = useState("");
   const [passwordHint, setPasswordHint] = useState("");
   const [formData, setFormData] = useState({
-    fullName: "",
     userName: "",
-    bio: "",
     email: "",
     password: "",
   });
@@ -34,9 +27,7 @@ const RegisterPage = ({ open, onClose }) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
 
-    if (name === "password") {
-      validatePassword(value);
-    }
+    if (name === "password") validatePassword(value);
   };
 
   const validatePassword = (password) => {
@@ -60,11 +51,7 @@ const RegisterPage = ({ open, onClose }) => {
         `http://localhost:8080/api/users/exists/${username}`
       );
       const exists = await res.json();
-      if (exists) {
-        setUsernameError("Username already taken");
-      } else {
-        setUsernameError("");
-      }
+      setUsernameError(exists ? "Username already taken" : "");
     } catch (err) {
       console.error("Error checking username:", err);
     }
@@ -75,21 +62,15 @@ const RegisterPage = ({ open, onClose }) => {
     if (usernameError) return;
 
     setLoading(true);
-    const userData = {
-      ...formData,
-      dob: dob ? dob.format("YYYY-MM-DD") : null,
-    };
-
     try {
       const response = await fetch(
         "http://localhost:8080/api/users/createUser",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(userData),
+          body: JSON.stringify(formData),
         }
       );
-
       if (response.ok) {
         const result = await response.json();
         console.log("✅ User created:", result);
@@ -115,34 +96,30 @@ const RegisterPage = ({ open, onClose }) => {
           left: "50%",
           transform: "translate(-50%, -50%)",
           bgcolor: "background.paper",
-          p: 4,
-          borderRadius: 2,
-          width: 370,
+          py: 4, // reduced vertical padding
+          px: 15,
+          width: { xs: 350, md: 450 }, // slightly narrower modal
           boxShadow: 24,
+          borderRadius: 3,
         }}
       >
+        {/* Modal Title near top */}
         <Typography
-          variant="h6"
-          mb={2}
+          variant="h4"
+          mb={4} // space below title
           textAlign="center"
-          sx={{ fontWeight: "bold" }}
+          sx={{
+            fontFamily: "'Playfair Display', serif",
+            fontWeight: "bold",
+          }}
         >
-          Create Account
+          Join BlogVerse
         </Typography>
 
         <form onSubmit={handleSubmit}>
-          <Stack spacing={2}>
+          <Stack spacing={3} alignItems="center">
             <TextField
-              label="Full Name"
-              name="fullName"
-              value={formData.fullName}
-              onChange={handleChange}
-              fullWidth
-              required
-            />
-
-            <TextField
-              label="User Name"
+              label="Username"
               name="userName"
               value={formData.userName}
               onChange={(e) => {
@@ -152,24 +129,18 @@ const RegisterPage = ({ open, onClose }) => {
               error={!!usernameError}
               helperText={usernameError}
               fullWidth
+              sx={{ maxWidth: 300 }} // reduced width
               required
             />
 
             <TextField
-              label="Tell us about you"
-              name="bio"
-              value={formData.bio}
-              onChange={handleChange}
-              fullWidth
-            />
-
-            <TextField
-              label="Email Address"
+              label="Email ID"
               type="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
               fullWidth
+              sx={{ maxWidth: 300 }}
               required
             />
 
@@ -180,6 +151,7 @@ const RegisterPage = ({ open, onClose }) => {
               value={formData.password}
               onChange={handleChange}
               fullWidth
+              sx={{ maxWidth: 300 }}
               required
               InputProps={{
                 endAdornment: (
@@ -196,23 +168,13 @@ const RegisterPage = ({ open, onClose }) => {
               helperText={passwordHint}
             />
 
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker
-                label="Date of Birth"
-                value={dob}
-                onChange={(newValue) => setDob(newValue)}
-                slotProps={{
-                  textField: { fullWidth: true, required: true },
-                }}
-              />
-            </LocalizationProvider>
-
             <Button
               type="submit"
               variant="contained"
               disabled={loading || !!usernameError}
               sx={{
                 mt: 1,
+                width: 300,
                 bgcolor: "#1976d2",
                 "&:hover": { bgcolor: "#1565c0" },
               }}
@@ -223,7 +185,7 @@ const RegisterPage = ({ open, onClose }) => {
             <Typography
               variant="body2"
               align="center"
-              sx={{ mt: 1, color: "text.secondary" }}
+              sx={{ color: "text.secondary" }}
             >
               Already a user?{" "}
               <Link

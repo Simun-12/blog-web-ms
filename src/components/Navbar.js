@@ -1,7 +1,12 @@
 import React from "react";
+import { useState } from "react";
 import { AppBar, Toolbar, Typography, Button, Box } from "@mui/material";
-
+import RegisterPage from "../pages/RegisterPage";
 const Navbar = () => {
+    const [openRegister, setOpenRegister] = useState(false);
+
+  const handleOpenRegister = () => setOpenRegister(true);
+  const handleCloseRegister = () => setOpenRegister(false);
   return (
     <AppBar
       position="static"
@@ -22,10 +27,11 @@ const Navbar = () => {
       >
         {/* Left logo */}
         <Typography
-          variant="h4"
+          variant="h3"
           sx={{
             fontWeight: "bold",
             letterSpacing: "0.5px",
+            fontFamily: "'Playfair Display', serif",
             cursor: "pointer",
             ml: 20, // slightly less than double previous (~30px)
           }}
@@ -56,22 +62,24 @@ const Navbar = () => {
           </Typography>
           <Button
             variant="contained"
+            onClick={handleOpenRegister}
             sx={{
                 mr:20,
               borderRadius: 20,
               textTransform: "none",
               backgroundColor: "black",
               fontSize: { xs: "1rem", md: "1.1rem" },
-              "&:hover": { backgroundColor: "#1565c0", cursor: "pointer" },
+              "&:hover": {   bgcolor: "#eee6d5",color:"black" , cursor: "pointer" },
             }}
           >
             Get Started
           </Button>
         </Box>
       </Toolbar>
-
+      
       {/* Sleek bottom line */}
       <Box sx={{ height: "1px", width: "100%", bgcolor: "black" }} />
+      <RegisterPage open={openRegister} onClose={handleCloseRegister} />
     </AppBar>
   );
 };

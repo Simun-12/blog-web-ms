@@ -1,27 +1,40 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box, Typography, Button } from "@mui/material";
 import Navbar from "../components/Navbar";
+import RegisterPage from "./RegisterPage"; // import your modal
 import bgImage from "../assets/4_SdjkdS98aKH76I8eD0_qjw.jpg";
 
 const LandingPage = () => {
+  const [openRegister, setOpenRegister] = useState(false);
+
+  const handleOpenRegister = () => setOpenRegister(true);
+  const handleCloseRegister = () => setOpenRegister(false);
+
+  const footerLinks = ["Help", "Terms", "Policy", "Careers", "Blog", "Post"];
+  const NAVBAR_HEIGHT = 80; // adjust to your navbar height
+  const TOP_LINE_HEIGHT = 1; // 1px top line
+
   return (
-    <>
-      {/* Sleek top line */}
-      <Box sx={{ height: "1px", width: "100%", bgcolor: "black" }} />
+    <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+      {/* Top horizontal line */}
+      <Box sx={{ height: `${TOP_LINE_HEIGHT}px`, width: "100%", bgcolor: "black" }} />
 
       <Navbar />
 
+      {/* Hero Section */}
       <Box
         sx={{
           display: "flex",
+          flexDirection: "row",
           alignItems: "center",
           justifyContent: "space-between",
-          height: "85vh",
+          height: `calc(100vh - ${NAVBAR_HEIGHT + TOP_LINE_HEIGHT}px)`,
+          minHeight: 0,
+          backgroundColor: "#eee6d5",
           overflow: "hidden",
-          backgroundColor: "#eee6d5", // slight off-white
         }}
       >
-        {/* LEFT TEXT SECTION */}
+        {/* Left text */}
         <Box
           sx={{
             flex: 1,
@@ -34,8 +47,7 @@ const LandingPage = () => {
             height: "100%",
           }}
         >
-          {/* Heading split into two lines */}
-          <Box sx={{ mb: 2 }}> 
+          <Box sx={{ mb: 2 }}>
             <Typography
               variant="h1"
               sx={{
@@ -63,9 +75,8 @@ const LandingPage = () => {
             </Typography>
           </Box>
 
-          {/* Secondary text */}
           <Typography
-            variant="h5"
+            variant="h6"
             sx={{
               mb: 6,
               color: "text.secondary",
@@ -75,10 +86,11 @@ const LandingPage = () => {
             A place to read, write, and deepen your understandings.
           </Typography>
 
-          {/* Button */}
+          {/* Get Started button opens modal */}
           <Button
             variant="contained"
             size="large"
+            onClick={handleOpenRegister}
             sx={{
               borderRadius: 30,
               px: 8,
@@ -90,11 +102,11 @@ const LandingPage = () => {
               "&:hover": { bgcolor: "#333" },
             }}
           >
-            Start Writing
+           Start Writing
           </Button>
         </Box>
 
-        {/* RIGHT IMAGE SECTION */}
+        {/* Right image */}
         <Box
           sx={{
             flex: "0 0 40%",
@@ -102,14 +114,44 @@ const LandingPage = () => {
             backgroundImage: `url(${bgImage})`,
             backgroundRepeat: "no-repeat",
             backgroundSize: "contain",
-            backgroundPosition: "right center",
+            backgroundPosition: "center right",
           }}
         />
       </Box>
 
-      {/* Sleek bottom line */}
+      {/* Horizontal line above footer */}
       <Box sx={{ height: "1px", width: "100%", bgcolor: "black" }} />
-    </>
+
+      {/* Footer */}
+      <Box
+        sx={{
+          width: "100%",
+          bgcolor: "#eee6d5",
+          py: 2,
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <Box sx={{ display: "flex", gap: 4 }}>
+          {footerLinks.map((link, index) => (
+            <Typography
+              key={index}
+              sx={{
+                fontSize: "0.875rem",
+                cursor: "pointer",
+                color: "text.primary",
+                "&:hover": { textDecoration: "underline" },
+              }}
+            >
+              {link}
+            </Typography>
+          ))}
+        </Box>
+      </Box>
+
+      {/* Register Modal */}
+      <RegisterPage open={openRegister} onClose={handleCloseRegister} />
+    </Box>
   );
 };
 
