@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { getAllBlogs } from "./util/BlogsApi";
+import Navbar from "./components/Navbar"
 import "./App.css";
-
+import LandingPage from "./pages/LandingPage";
 
 function App() {
   const [blogs, setBlogs] = useState([]);
@@ -20,24 +21,11 @@ function App() {
   };
 
   return (
-    
+    <div>
      
-      <div className="blog-container">
-        {blogs.length === 0 ? (
-          <p>No blogs yet. Start writing!</p>
-        ) : (
-          blogs.map((blog) => (
-            <div key={blog.postId} className="blog-card">
-              <div className="blog-title">{blog.title}</div>
-              <div className="blog-content">
-                {blog.content || "No content available"}
-              </div>
-              <div className="blog-meta">Written by Unknown • Just now</div>
-            </div>
-          ))
-        )}
-      </div>
-    
+      <div> <LandingPage/> </div>
+    </div>
+   
   );
 }
 
